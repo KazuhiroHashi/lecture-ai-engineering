@@ -21,7 +21,7 @@ class DataLoader:
             return pd.read_csv(path)
         else:
             # ローカルのファイル
-            local_path = "data/Titanic.csv"
+            local_path = "/Users/hashinokazuhiro/Downloads/lecture-ai-engineering-master/day5/演習2/data/Titanic.csv"
             if os.path.exists(local_path):
                 return pd.read_csv(local_path)
 
@@ -285,3 +285,30 @@ if __name__ == "__main__":
     # ベースラインとの比較
     baseline_ok = ModelTester.compare_with_baseline(metrics)
     print(f"ベースライン比較: {'合格' if baseline_ok else '不合格'}")
+
+
+
+def test_inference_speed_and_accuracy()
+        """モデル性能のテストを一旦コピー"""
+    # データ準備
+    data = DataLoader.load_titanic_data()
+    X, y = DataLoader.preprocess_titanic_data(data)
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42
+    )
+
+    # モデル学習
+    model = ModelTester.train_model(X_train, y_train)
+
+    # 評価
+    metrics = ModelTester.evaluate_model(model, X_test, y_test)
+
+    # ベースラインとの比較
+    assert ModelTester.compare_with_baseline(
+        metrics, 0.75
+    ), f"モデル性能がベースラインを下回っています: {metrics['accuracy']}"
+
+    # 推論時間の確認
+    assert (
+        metrics["inference_time"] < 1.0
+    ), f"推論時間が長すぎます: {metrics['inference_time']}秒"        
